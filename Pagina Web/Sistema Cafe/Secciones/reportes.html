@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisteam Café - Reportes Financieros</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html">🏢 Proveedores</a>
+        <a href="clientes.html">🏪 Clientes</a>
+        <a href="compras.html">☕ Gestión Compra/Venta</a>
+        <a href="ventas.html">💰 Ventas Diarias</a>
+        <a href="reportes.html">📊 Reporte Financiero</a>
+    </div>
+
+    <div class="container">
+        <h1>📊 Centro de Reportes Financieros</h1>
+
+        <h2>1. Resumen Consolidado General</h2>
+        <div class="report-cards-container">
+            <div class="card-report card-compras">
+                <h3>Total Invertido en Compras</h3>
+                <p class="card-title-compras" id="card_compras_usd">0.00 USD</p>
+                <small class="card-subtext" id="card_compras_ves">0.00 VES</small>
+            </div>
+            <div class="card-report card-ventas">
+                <h3>Total Facturado en Ventas</h3>
+                <p class="card-title-ventas" id="card_ventas_ves">0.00 VES</p>
+                <small class="card-subtext" id="card_ventas_usd">0.00 USD</small>
+            </div>
+        </div>
+
+        <h2>2. Cartera de Cuentas por Cobrar Semanal (Financiamientos)</h2>
+        <table class="table-report">
+            <thead>
+                <tr>
+                    <th>Cliente (RIF)</th>
+                    <th>Kilos Adquiridos</th>
+                    <th>Monto Pendiente (VES)</th>
+                    <th>Equivalencia (USD)</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_cuentas_cobrar">
+                </tbody>
+        </table>
+
+        <h2>3. Rendimiento y Ganancia por Comercio</h2>
+        <table class="table-report">
+            <thead>
+                <tr>
+                    <th>Nombre Comercial</th>
+                    <th>Tipo de Entidad</th>
+                    <th>Total Kilos</th>
+                    <th>Volumen Total Monetario</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_rendimiento_comercio">
+                </tbody>
+        </table>
+    </div>
+
+    <script {__id: "script-reportes-css-separado"}>
+        function generarReportes() {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+
+            let totalComprasUSD = 0;
+            let totalComprasVES = 0;
+            let totalVentasVES = 0;
+            let totalVentasUSD = 0;
+
+            const tbodyCuentas = document.getElementById('tabla_cuentas_cobrar');
+            const tbodyRendimiento = document.getElementById('tabla_rendimiento_comercio');
+            tbodyCuentas.innerHTML = '';
+            tbodyRendimiento.innerHTML = '';
+
+            const rendimientoAgrupado = {};
+
+            transacciones.forEach(t => {
+                if (t.tipo === 'COMPRA') {
+                    totalComprasUSD += t.monto_usd;
+                    totalComprasVES += t.monto_ves;
+                } else if (t.tipo === 'VENTA') {
+                    totalVentasVES += t.monto_ves;
+                    totalVentasUSD += t.monto_usd;
+
+                    const datosCliente = clientes.find(c => c.rif_negocio === t.entidad_id);
+                    const nombreCliente = datosCliente ? datosCliente.nombre_negocio : "Cliente No Encontrado";
+                    const rifCliente = t.entidad_id || "S/R";
+
+                    tbodyCuentas.innerHTML += `
+                        <tr class="row-report">
+                            <td class="cell-report"><strong>${nombreCliente}</strong> <span class="cell-subinfo">(${rifCliente})</span></td>
+                            <td class="cell-report">${t.total_kg.toFixed(2)} Kg</td>
+                            <td class="cell-monto-alerta">${t.monto_ves.toFixed(2)} VES</td>
+                            <td class="cell-report cell-subtext">${t.monto_usd.toFixed(2)} USD</td>
+                        </tr>
+                    `;
+                }
+
+                const idComercio = t.entidad_id;
+                if (!rendimientoAgrupado[idComercio]) {
+                    rendimientoAgrupado[idComercio] = {
+                        tipo: t.tipo === 'COMPRA' ? 'Proveedor' : 'Cliente',
+                        kilos: 0,
+                        monetario: 0,
+                        moneda: t.tipo === 'COMPRA' ? 'USD' : 'VES'
+                    };
+                }
+                rendimientoAgrupado[idComercio].kilos += t.total_kg;
+                rendimientoAgrupado[idComercio].monetario += t.tipo === 'COMPRA' ? t.monto_usd : t.monto_ves;
+            });
+
+            if (tbodyCuentas.innerHTML === '') {
+                tbodyCuentas.innerHTML = `<tr><td colspan="4" class="text-no-data">No hay financiamientos activos registrados esta semana.</td></tr>`;
+            }
+
+            document.getElementById('card_compras_usd').textContent = totalComprasUSD.toFixed(2) + " USD";
+            document.getElementById('card_compras_ves').textContent = totalComprasVES.toFixed(2) + " VES";
+            document.getElementById('card_ventas_ves').textContent = totalVentasVES.toFixed(2) + " VES";
+            document.getElementById('card_ventas_usd').textContent = totalVentasUSD.toFixed(2) + " USD";
+
+            const idsComercios = Object.keys(rendimientoAgrupado);
+            
+            if (idsComercios.length === 0) {
+                tbodyRendimiento.innerHTML = `<tr><td colspan="4" class="text-no-data">No se han ejecutado operaciones comerciales aún.</td></tr>`;
+            } else {
+                idsComercios.forEach(id => {
+                    const info = rendimientoAgrupado[id];
+                    let nombreComercialReal = "Desconocido";
+                    
+                    if (info.tipo === 'Proveedor') {
+                        const prov = proveedores.find(p => p.rif_negocio === id);
+                        nombreComercialReal = prov ? prov.nombre_negocio : `Prov: ${id}`;
+                    } else {
+                        const cli = clientes.find(c => c.rif_negocio === id);
+                        nombreComercialReal = cli ? cli.nombre_negocio : `Cli: ${id}`;
+                    }
+
+                    tbodyRendimiento.innerHTML += `
+                        <tr class="row-report">
+                            <td class="cell-report" style="font-weight: 500;">${nombreComercialReal}</td>
+                            <td class="cell-report"><span class="badge-entidad">${info.tipo}</span></td>
+                            <td class="cell-report">${info.kilos.toFixed(2)} Kg</td>
+                            <td class="cell-report" style="font-weight: bold; color: var(--primary-dark);">
+                                ${info.monetario.toFixed(2)} ${info.moneda}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.onload = generarReportes;
+    </script>
+</body>
+</html>

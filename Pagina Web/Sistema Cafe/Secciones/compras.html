@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Café - Movimientos Comerciales</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html">🏢 Proveedores</a>
+        <a href="clientes.html">🏪 Clientes</a>
+        <a href="compras.html" class="active">☕ Gestión Compra/Venta</a>
+        <a href="ventas.html">💰 Ventas Diarias</a>
+        <a href="reportes.html">📊 Reporte Financiero</a>
+    </div>
+
+    <div class="container">
+        <h1 class="main-title">Módulo de Gestión Comercial</h1>
+        
+        <!-- SECCIÓN DE LA TASA DEL BCV CON CLASES LIMPIAS -->
+        <div class="tasa-bcv-box">
+            <label>Tasa de Cambio del Día (Ref. BCV):</label>
+            <input type="number" id="tasa_cambio" class="tasa-input" value="40.00" step="0.01" readonly>
+            <span>VES / USD</span>
+        </div>
+
+        <div class="modo-container">
+            <button type="button" id="btnModoCompra" class="btn-primary modo-btn-flex" onclick="setModo('COMPRA')">🛒 Registrar Compra (USD)</button>
+            <button type="button" id="btnModoVenta" class="btn-secondary modo-btn-flex" onclick="setModo('VENTA')">🔥 Registrar Venta (VES)</button>
+        </div>
+
+        <h2 id="formTitulo" class="section-title">Operación: Registro de Compra (Contado - USD)</h2>
+
+        <form id="formMovimiento">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label id="labelEntidad">Seleccionar Proveedor Activo:</label>
+                    <select id="entidad_id" required>
+                        <option value="">-- Seleccione --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha del Movimiento:</label>
+                    <input type="date" id="fecha" required>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">Cantidades y Precios por Versión</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Café Suave (Kg):</label>
+                    <input type="number" id="kg_suave" value="0" min="0" step="0.1" oninput="actualizarCalculos()" required>
+                </div>
+                <div class="form-group">
+                    <label id="labelPSuave">Precio Kg Suave (USD):</label>
+                    <input type="number" id="p_suave" value="4.50" min="0" step="0.01" oninput="actualizarCalculos()" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Café Normal (Kg):</label>
+                    <input type="number" id="kg_normal" value="0" min="0" step="0.1" oninput="actualizarCalculos()" required>
+                </div>
+                <div class="form-group">
+                    <label id="labelPNormal">Precio Kg Normal (USD):</label>
+                    <input type="number" id="p_normal" value="5.00" min="0" step="0.01" oninput="actualizarCalculos()" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Café Fuerte (Kg):</label>
+                    <input type="number" id="kg_fuerte" value="0" min="0" step="0.1" oninput="actualizarCalculos()" required>
+                </div>
+                <div class="form-group">
+                    <label id="labelPFuerte">Precio Kg Fuerte (USD):</label>
+                    <input type="number" id="p_fuerte" value="6.00" min="0" step="0.01" oninput="actualizarCalculos()" required>
+                </div>
+            </div>
+
+            <div id="desglosePrecios" class="desglose-box">
+                <h4>Desglose por Versión:</h4>
+                <p>• Suave: 0.0 kg × 0.00 = 0.00</p>
+                <p>• Normal: 0.0 kg × 0.00 = 0.00</p>
+                <p>• Fuerte: 0.0 kg × 0.00 = 0.00</p>
+                <hr>
+                <p><strong>Total Kilogramos:</strong> 0.0 Kg</p>
+                <p><strong>Monto Total de la Operación:</strong> <span class="desglose-total-monto">0.00</span></p>
+            </div>
+
+            <div class="submit-container">
+                <button type="submit" id="btnSubmit" class="btn-primary btn-submit-large">💾 Guardar Registro Comercial</button>
+            </div>
+        </form>
+
+        <h2 class="section-title" style="margin-top: 40px;">Historial General de Movimientos</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Entidad / Comercio</th>
+                        <th>Detalle de Café</th>
+                        <th>Total Kg</th>
+                        <th>Monto Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyMovimientos">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let modoActual = 'COMPRA';
+
+        const hoy = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha').value = hoy;
+
+        const tasaFijaDefinida = parseFloat(document.getElementById('tasa_cambio').value) || 40.00;
+        localStorage.setItem('tasa_cambio', tasaFijaDefinida);
+
+        function setModo(modo) {
+            modoActual = modo;
+            const btnCompra = document.getElementById('btnModoCompra');
+            const btnVenta = document.getElementById('btnModoVenta');
+            const formTitulo = document.getElementById('formTitulo');
+            const labelEntidad = document.getElementById('labelEntidad');
+            
+            const labelPSuave = document.getElementById('labelPSuave');
+            const labelPNormal = document.getElementById('labelPNormal');
+            const labelPFuerte = document.getElementById('labelPFuerte');
+
+            if (modo === 'COMPRA') {
+                btnCompra.className = 'btn-primary modo-btn-flex';
+                btnVenta.className = 'btn-secondary modo-btn-flex';
+                formTitulo.textContent = 'Operación: Registro de Compra (Contado - USD)';
+                labelEntidad.textContent = 'Seleccionar Proveedor Activo:';
+                
+                labelPSuave.textContent = 'Precio Kg Suave (USD):';
+                labelPNormal.textContent = 'Precio Kg Normal (USD):';
+                labelPFuerte.textContent = 'Precio Kg Fuerte (USD):';
+
+                document.getElementById('p_suave').value = "4.50";
+                document.getElementById('p_normal').value = "5.00";
+                document.getElementById('p_fuerte').value = "6.00";
+            } else {
+                btnCompra.className = 'btn-secondary modo-btn-flex';
+                btnVenta.className = 'btn-primary modo-btn-flex';
+                formTitulo.textContent = 'Operación: Registro de Venta (Crédito/Contado - VES)';
+                labelEntidad.textContent = 'Seleccionar Cliente Activo:';
+                
+                labelPSuave.textContent = 'Precio Kg Suave (VES):';
+                labelPNormal.textContent = 'Precio Kg Normal (VES):';
+                labelPFuerte.textContent = 'Precio Kg Fuerte (VES):';
+
+                document.getElementById('p_suave').value = "250.00";
+                document.getElementById('p_normal').value = "300.00";
+                document.getElementById('p_fuerte').value = "350.00";
+            }
+            cargarEntidades();
+            actualizarCalculos();
+        }
+
+        function cargarEntidades() {
+            const select = document.getElementById('entidad_id');
+            select.innerHTML = '<option value="">-- Seleccione --</option>';
+
+            if (modoActual === 'COMPRA') {
+                const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+                proveedores.forEach(p => {
+                    if(p.activo !== false) {
+                        const option = document.createElement('option');
+                        option.value = p.rif;
+                        option.textContent = `${p.nombre_negocio} (RIF: ${p.rif})`;
+                        select.appendChild(option);
+                    }
+                });
+            } else {
+                const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+                clientes.forEach(c => {
+                    if(c.activo !== false) {
+                        const option = document.createElement('option');
+                        option.value = c.rif;
+                        option.textContent = `${c.nombre_negocio} (RIF: ${c.rif})`;
+                        select.appendChild(option);
+                    }
+                });
+            }
+        }
+
+        function actualizarCalculos() {
+            const kgSuave = parseFloat(document.getElementById('kg_suave').value) || 0;
+            const kgNormal = parseFloat(document.getElementById('kg_normal').value) || 0;
+            const kgFuerte = parseFloat(document.getElementById('kg_fuerte').value) || 0;
+
+            const pSuave = parseFloat(document.getElementById('p_suave').value) || 0;
+            const pNormal = parseFloat(document.getElementById('p_normal').value) || 0;
+            const pFuerte = parseFloat(document.getElementById('p_fuerte').value) || 0;
+
+            const tasa = parseFloat(document.getElementById('tasa_cambio').value) || 40.00;
+            const moneda = modoActual === 'COMPRA' ? 'USD' : 'VES';
+
+            const subSuave = kgSuave * pSuave;
+            const subNormal = kgNormal * pNormal;
+            const subFuerte = kgFuerte * pFuerte;
+
+            const totalKg = kgSuave + kgNormal + kgFuerte;
+            const totalMonto = subSuave + subNormal + subFuerte;
+
+            const contenedor = document.getElementById('desglosePrecios');
+            contenedor.innerHTML = `
+                <h4>Desglose por Versión:</h4>
+                <p>• Suave: ${kgSuave.toFixed(1)} kg × ${pSuave.toFixed(2)} ${moneda} = ${subSuave.toFixed(2)} ${moneda}</p>
+                <p>• Normal: ${kgNormal.toFixed(1)} kg × ${pNormal.toFixed(2)} ${moneda} = ${subNormal.toFixed(2)} ${moneda}</p>
+                <p>• Fuerte: ${kgFuerte.toFixed(1)} kg × ${pFuerte.toFixed(2)} ${moneda} = ${subFuerte.toFixed(2)} ${moneda}</p>
+                <hr>
+                <p><strong>Total Kilogramos:</strong> ${totalKg.toFixed(1)} Kg</p>
+                <p><strong>Monto Total de la Operación:</strong> <span class="desglose-total-monto">${totalMonto.toFixed(2)} ${moneda}</span></p>
+                <p class="desglose-estimado">
+                    ${modoActual === 'COMPRA' ? `Equivalente estimado: ${(totalMonto * tasa).toFixed(2)} VES` : `Equivalente estimado: ${(totalMonto / tasa).toFixed(2)} USD`}
+                </p>
+            `;
+        }
+
+        function cargarTablaHistorial() {
+            const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            const tbody = document.getElementById('tbodyMovimientos');
+            tbody.innerHTML = '';
+
+            if (transacciones.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #888;">No hay movimientos registrados.</td></tr>';
+                return;
+            }
+
+            transacciones.forEach(t => {
+                const tr = document.createElement('tr');
+                const badge = t.tipo === 'COMPRA' ? '<span class="badge-activo" style="background-color: #d1ecf1; color: #0c5460;">COMPRA</span>' : '<span class="badge-activo" style="background-color: #d4edda; color: #155724;">VENTA</span>';
+                
+                const moneda = t.tipo === 'COMPRA' ? 'USD' : 'VES';
+                const montoMostrar = t.monto_total || t.monto_ves || 0;
+
+                tr.innerHTML = `
+                    <td>${t.fecha}</td>
+                    <td>${badge}</td>
+                    <td><strong>${t.nombre_negocio}</strong></td>
+                    <td style="font-size: 13px;">S: ${(t.kg_suave||0).toFixed(1)}k | N: ${(t.kg_normal||0).toFixed(1)}k | F: ${(t.kg_fuerte||0).toFixed(1)}k</td>
+                    <td>${(t.total_kg||0).toFixed(1)} Kg</td>
+                    <td style="font-weight: bold; color: #2e7d32;">${parseFloat(montoMostrar).toFixed(2)} ${moneda}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('formMovimiento').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const kgSuave = parseFloat(document.getElementById('kg_suave').value) || 0;
+            const kgNormal = parseFloat(document.getElementById('kg_normal').value) || 0;
+            const kgFuerte = parseFloat(document.getElementById('kg_fuerte').value) || 0;
+            const totalKg = kgSuave + kgNormal + kgFuerte;
+
+            if (totalKg <= 0) {
+                alert("⚠️ Operación inválida: El total de kilogramos debe ser mayor a 0.");
+                return;
+            }
+
+            const entidadId = document.getElementById('entidad_id').value;
+            let nombreEntidad = "Asociado";
+
+            if (modoActual === 'COMPRA') {
+                const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+                const p = proveedores.find(item => item.rif === entidadId);
+                if (p) nombreEntidad = p.nombre_negocio;
+            } else {
+                const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+                const c = clientes.find(item => item.rif === entidadId);
+                if (c) nombreEntidad = c.nombre_negocio;
+            }
+
+            const pSuave = parseFloat(document.getElementById('p_suave').value) || 0;
+            const pNormal = parseFloat(document.getElementById('p_normal').value) || 0;
+            const pFuerte = parseFloat(document.getElementById('p_fuerte').value) || 0;
+            const totalMonto = (kgSuave * pSuave) + (kgNormal * pNormal) + (kgFuerte * pFuerte);
+
+            let transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+            
+            transacciones.push({
+                tipo: modoActual,
+                tipo_operacion: modoActual.toLowerCase(),
+                fecha: document.getElementById('fecha').value,
+                entidad_id: entidadId,
+                rif: entidadId,
+                nombre_negocio: nombreEntidad,
+                kg_suave: kgSuave,
+                kg_normal: kgNormal,
+                kg_fuerte: kgFuerte,
+                total_kg: totalKg,
+                monto_total: totalMonto,
+                monto_ves: modoActual === 'VENTA' ? totalMonto : totalMonto * tasaFijaDefinida
+            });
+
+            localStorage.setItem('transacciones', JSON.stringify(transacciones));
+            alert(`🎉 ¡Registro de ${modoActual} guardado con éxito!`);
+            
+            document.getElementById('kg_suave').value = "0";
+            document.getElementById('kg_normal').value = "0";
+            document.getElementById('kg_fuerte').value = "0";
+            
+            actualizarCalculos();
+            cargarTablaHistorial();
+        });
+
+        window.onload = function() {
+            cargarEntidades();
+            actualizarCalculos();
+            cargarTablaHistorial();
+        };
+    </script>
+</body>
+</html>

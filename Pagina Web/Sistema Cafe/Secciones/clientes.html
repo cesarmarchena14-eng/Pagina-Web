@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisteam Café - Clientes</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html">🏢 Proveedores</a>
+        <a href="clientes.html">🏪 Clientes</a>
+        <a href="compras.html">☕ Gestión Compra/Venta</a>
+        <a href="ventas.html">💰 Ventas Diarias</a>
+        <a href="reportes.html">📊 Reporte Financiero</a>
+    </div>
+
+    <div class="container">
+        <h1>Gestionar Clientes (Acreedores)</h1>
+        <h2 id="tituloForm">Registrar Nuevo Cliente</h2>
+
+        <form id="formCliente">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nombre Comercial / Negocio:</label>
+                    <input type="text" id="nombre_negocio" placeholder="Ej: Cliente S.A." required>
+                </div>
+                <div class="form-group">
+                    <label>RIF / Cédula del Cliente:</label>
+                    <input type="text" id="rif_negocio" placeholder="Ej: V-12345678-0" required>
+                </div>
+                <div class="form-group">
+                    <label>Persona de Contacto:</label>
+                    <input type="text" id="c_nombre" required placeholder="Ej: María Gómez">
+                </div>
+                <div class="form-group">
+                    <label>Cédula del Contacto:</label>
+                    <input type="text" id="c_cedula" required placeholder="Ej: 12345678">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono de Contacto:</label>
+                    <input type="tel" id="c_telefono" required placeholder="Ej: 0412-1234567">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico:</label>
+                    <input type="email" id="c_correo" required placeholder="Ej: maria@cliente.com">
+                </div>
+            </div>
+            <button type="submit" id="btnGuardar">Guardar Cliente</button>
+            <button type="button" id="btnCancelar" class="btn-secondary hidden" onclick="cancelarEdicion()">Cancelar</button>
+        </form>
+
+        <h2>Lista de Clientes Activos/Financiados</h2>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Negocio / RIF</th>
+                        <th>Contacto</th>
+                        <th>Teléfono / Correo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaClientes"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let editando = false;
+        let idEditar = null;
+
+        function mostrarClientes() {
+            const tbody = document.getElementById('tablaClientes');
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            tbody.innerHTML = '';
+
+            if(clientes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay clientes registrados.</td></tr>';
+                return;
+            }
+
+            clientes.forEach((c, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${c.nombre_negocio}</strong><br><small>${c.rif_negocio}</small></td>
+                    <td>${c.c_nombre}<br><small>C.I: ${c.c_cedula}</small></td>
+                    <td>${c.c_telefono}<br><small>${c.c_correo}</small></td>
+                    <td><span class="badge ${c.activo ? 'badge-success' : 'badge-danger'}">${c.activo ? 'Activo' : 'Inactivo'}</span></td>
+                    <td>
+                        <button class="btn-sm btn-warning" onclick="prepararEdicion(${idx})">✏️ Editar</button>
+                        <button class="btn-sm ${c.activo ? 'btn-danger' : 'btn-success'}" onclick="alternarEstado(${idx})">
+                            ${c.activo ? '🛑 Desactivar' : '✅ Activar'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('formCliente').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+
+            const datosContacto = {
+                c_nombre: document.getElementById('c_nombre').value.trim(),
+                c_cedula: document.getElementById('c_cedula').value.trim(),
+                c_telefono: document.getElementById('c_telefono').value.trim(),
+                c_correo: document.getElementById('c_correo').value.trim()
+            };
+
+            if(editando) {
+                clientes[idEditar] = { ...clientes[idEditar], ...datosContacto };
+                alert("Datos de contacto del cliente actualizados.");
+                cancelarEdicion();
+            } else {
+                const rif = document.getElementById('rif_negocio').value.trim().toUpperCase();
+                if(clientes.some(c => c.rif_negocio.toUpperCase() === rif)) {
+                    alert("Este RIF/Cédula de cliente ya existe.");
+                    return;
+                }
+
+                clientes.push({
+                    nombre_negocio: document.getElementById('nombre_negocio').value.trim(),
+                    rif_negocio: rif,
+                    ...datosContacto,
+                    activo: true
+                });
+                alert("Cliente registrado exitosamente.");
+            }
+
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+            document.getElementById('formCliente').reset();
+            mostrarClientes();
+        });
+
+        function pegarFila(c, idx) { /* No requerida por modularidad avanzada */ }
+
+        function prepararEdicion(idx) {
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const c = clientes[idx];
+
+            document.getElementById('nombre_negocio').value = c.nombre_negocio;
+            document.getElementById('nombre_negocio').disabled = true;
+            document.getElementById('rif_negocio').value = c.rif_negocio;
+            document.getElementById('rif_negocio').disabled = true;
+
+            document.getElementById('c_nombre').value = c.c_nombre;
+            document.getElementById('c_cedula').value = c.c_cedula;
+            document.getElementById('c_telefono').value = c.c_telefono;
+            document.getElementById('c_correo').value = c.c_correo;
+
+            document.getElementById('tituloForm').textContent = "✏️ Modificando Contacto de " + c.nombre_negocio;
+            document.getElementById('btnCancelar').classList.remove('hidden');
+            editando = true;
+            idEditar = idx;
+        }
+
+        function cancelarEdicion() {
+            document.getElementById('formCliente').reset();
+            document.getElementById('nombre_negocio').disabled = false;
+            document.getElementById('rif_negocio').disabled = false;
+            document.getElementById('tituloForm').textContent = "Registrar Nuevo Cliente";
+            document.getElementById('btnCancelar').classList.add('hidden');
+            editando = false;
+            idEditar = null;
+        }
+
+        function alternarEstado(idx) {
+            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            clientes[idx].activo = !clientes[idx].activo;
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+            mostrarClientes();
+        }
+
+        window.onload = mostrarClientes;
+    </script>
+</body>
+</html>

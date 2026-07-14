@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Fundamentos de CSS</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Paradigmas y Arquitectura Web</h1>
+        <nav class="nav-custom-menu">
+            <a href="../index.html.html" class="btn-nav">Inicio</a> 
+            <a href="Introduccion.html" class="btn-nav">Introducción</a> 
+            <a href="Paradigma Aquitectura.html" class="btn-nav">Paradigmas y Arq.</a>
+            <a href="Todo HTML.html" class="btn-nav">HTML</a>
+            <a href="CSS.html" class="btn-nav">CSS</a>
+            <a href="Javascript.html" class="btn-nav">JavaScript</a>
+            <a href="DOM.html" class="btn-nav">DOM</a>
+            <a href="POO.html" class="btn-nav">POO</a>
+            <a href="Formularios.html" class="btn-nav">Formularios / Test</a>
+            <a href="../Sistema Cafe/login.html" class="btn-nav">Login</a>
+        </nav>
+    </header>
+  
+    <div class="flex-layout">
+    <aside class="sidebar-wiki">
+    <h4>Navegación CSS</h4>
+    <ul>
+        <li><a href="#que-es-css">1. ¿Qué es CSS?</a></li>
+        <li><a href="#formas-incluir">2. Formas de inclusión</a></li>
+        <li><a href="#unidades-css">3. Unidades de medida</a></li>
+        <li><a href="#modelo-cajas">4. Modelo de Cajas</a></li>
+    </ul>
+
+    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center;">
+        <a href="../PDF/CSS.pdf" download="Guia_CSS.pdf" 
+           style="display: inline-flex; align-items: center; gap: 8px; background: #3282b8; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85rem; font-weight: bold;">
+            <span>📥</span> Descargar PDF
+        </a>
+    </div>
+
+</aside>
+
+    <div class="container-main">
+        
+        <div id="que-es-css" class="tag-desc">
+            <h2>¿Qué es CSS?</h2>
+            <p>Antes de comenzar, debes tener claro un concepto clave: una página web es realmente un documento de texto. En dicho documento se escribe código HTML, con el que se que crea el contenido de una web. Por otro lado, existe el código CSS, que unido al código HTML permite darle forma, color, posición (y otras características visuales) a un documento web.</p>
+            <p>En resumen, se trata de un «idioma» o lenguaje, como podría ser el inglés o el alemán, que los navegadores web como Chrome o Firefox conocen y pueden entender. Nuestro objetivo como diseñadores y programadores web es precisamente ese: aprender el idioma e indicarle al navegador lo que debe hacer.</p>
+        </div>
+
+        <div class="tag-desc">
+            <h2>¿Por qué se usa CSS?</h2>
+            <p>La idea de CSS es la de utilizar el concepto de separación de presentación y contenido. Este concepto se basa en que, como programadores, lo ideal es separar claramente el código que escribimos. ¿Por qué? Porque con el tiempo, esto hará que el código sea más fácil de modificar y mantener.</p>
+            <p>La idea es la siguiente:</p>
+            <ul>
+                <li>Los documentos HTML (contenido) incluirán sólo información y datos.</li>
+                <li>Los documentos CSS (presentación) incluirán sólo los aspectos relacionados con el estilo (diseño, colores, formas, etc...).</li>
+            </ul>
+        </div>
+
+        <div id="formas-incluir" class="tag-desc">
+            <h2>Formas de enlazar CSS</h2>
+            <p>Existen tres métodos principales para aplicar estilos a un documento HTML, cada uno con un propósito técnico distinto:</p>
+            <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #1a1a2e; color: white;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Mediante...</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Descripción</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">&lt;link rel="stylesheet"&gt;</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Archivo CSS externo: El código se escribe en un archivo .css aparte.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">&lt;style&gt;</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Bloque de estilos: El código se escribe en una etiqueta style en el HTML.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Atributo style="..."</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Estilos en línea: El código se escribe en un atributo de una etiqueta.</td>
+                </tr>
+            </table>
+
+    
+    <h3 id="css-externo">Archivo CSS externo</h3>
+    <p>En la cabecera de nuestro documento HTML, más concretamente en el bloque <code>&lt;head&gt;</code>, podemos incluir una etiqueta <code>&lt;link&gt;</code> con la que establecemos una relación entre el documento HTML actual y el archivo .css que indicamos en el atributo href.</p>
+
+    <p>Veamos el código de nuestro index.html:</p>
+
+    <pre style="background: #272822; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto;"><code><span style="color: #f92672;">&lt;link</span> <span style="color: #a6e22e;">rel</span>=<span style="color: #e6db74;">"stylesheet"</span> <span style="color: #a6e22e;">href</span>=<span style="color: #e6db74;">"index.css"</span> <span style="color: #f92672;">/&gt;</span></code></pre>
+
+    <p>De esta forma, los navegadores sabrán que deben aplicar los estilos que se encuentren en el archivo index.css que está junto al documento index.html actual. Se aconseja escribir esta línea lo antes posible (sobre todo, antes de los scripts), obligando así al navegador a aplicar los estilos cuanto antes y eliminar la falsa percepción visual de que la página está en blanco y no ha sido cargada por completo.</p>
+
+    <h3 id="css-interno">Bloque de estilos</h3>
+    <p>Otra de las formas que existen para incluir estilos CSS en nuestra página es la de añadirlos directamente en el documento HTML, a través de una etiqueta <code>&lt;style&gt;</code> que contendrá el código CSS:</p>
+
+    <pre style="background: #272822; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto;"><code><span style="color: #f92672;">&lt;!DOCTYPE</span> <span style="color: #a6e22e;">html</span><span style="color: #f92672;">&gt;</span>
+<span style="color: #f92672;">&lt;html&gt;</span>
+  <span style="color: #f92672;">&lt;head&gt;</span>
+    <span style="color: #f92672;">&lt;title&gt;</span>Título de la página<span style="color: #f92672;">&lt;/title&gt;</span>
+    <span style="color: #f92672;">&lt;style&gt;</span>
+      <span style="color: #a6e22e;">div</span> {
+        <span style="color: #66d9ef;">background</span>: <span style="color: #ae81ff;">hotpink</span>;
+        <span style="color: #66d9ef;">color</span>: <span style="color: #ae81ff;">white</span>;
+      }
+    <span style="color: #f92672;">&lt;/style&gt;</span>
+  <span style="color: #f92672;">&lt;/head&gt;</span>
+  ...
+<span style="color: #f92672;">&lt;/html&gt;</span></code></pre>
+
+    <p>Este sistema puede servirnos en ciertos casos particulares, pero hay que darle prioridad al método anterior (CSS externo), ya que incluyendo el código CSS en el interior del archivo HTML arruinamos la posibilidad de tener el código CSS en un documento a parte, pudiendo reutilizarlo y enlazarlo desde otros documentos HTML mediante la etiqueta <code>&lt;link&gt;</code>.</p>
+
+    <h3 id="css-inline">Estilos en línea</h3>
+    <p>Por último, la tercera forma de aplicar estilos en un documento HTML es el conocido como estilos en línea. Se trata de hacerlo directamente, a través del atributo style de la propia etiqueta donde queramos aplicar el estilo, colocando ahí las propiedades CSS (que pueden separarse por ;):</p>
+
+    <pre style="background: #272822; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto;"><code><span style="color: #f92672;">&lt;p&gt;</span>¡Hola <span style="color: #f92672;">&lt;span</span> <span style="color: #a6e22e;">style</span>=<span style="color: #e6db74;">"color: red; padding: 8px"</span><span style="color: #f92672;">&gt;</span>amigo lector<span style="color: #f92672;">&lt;/span&gt;</span>!<span style="color: #f92672;">&lt;/p&gt;</span></code></pre>
+
+    <p>De la misma forma que en el método anterior, con la etiqueta <code>&lt;style&gt;</code>, se recomienda no utilizar este método salvo en casos muy específicos y justificados, ya que los estilos se asocian a la etiqueta HTML en cuestión y no pueden reutilizarse. Es por eso, que se suele considerar una mala práctica por muchos diseñadores cuando la sobreutilizas (sin una razón de peso). Sin embargo, es una excelente forma de inyectar o incluir variables CSS en una etiqueta y sus etiquetas hijas.</p>
+</div>
+
+        <div id="unidades-css" class="tag-desc">
+    <h2>Tipos de Unidades en CSS</h2>
+    
+    <p>De forma muy frecuente, en CSS necesitaremos utilizar tamaños. Para indicarlo de una forma apropiada, necesitaremos conocer las unidades que podemos utilizar en CSS para definir dichos tamaños. Existen multitud de unidades. Quizás las más populares son unidades como px (píxels) o % (porcentajes), entre muchas otras.</p>
+
+    <p>Cuando estamos empezando a trabajar con CSS, mi consejo suele ser entender primero las unidades de tamaño fijo (o absolutas) y utilizar alguna de ellas, como por ejemplo, el píxel: px. Una vez se entiendo su uso, vamos pasando a utilizar unidades más complejas.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+        <div style="background: #ffffff; border-left: 5px solid #1a1a2e; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3 style="color: #1a1a2e; margin-top: 0;">📏 Absolutas</h3>
+            <p>Tienen un tamaño fijo y no cambian según el dispositivo.</p>
+            <code style="background: #eee; padding: 2px 5px; border-radius: 3px;">px, cm, mm, in, pt</code>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 10px;"><em>Uso: Ideal para bordes finos o impresiones.</em></p>
+        </div>
+
+        <div style="background: #ffffff; border-left: 5px solid #3282b8; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3 style="color: #3282b8; margin-top: 0;">⚖️ Relativas</h3>
+            <p>Se adaptan al tamaño de la pantalla o del elemento padre.</p>
+            <code style="background: #eee; padding: 2px 5px; border-radius: 3px;">%, em, rem, vw, vh</code>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 10px;"><em>Uso: Vital para el Diseño Responsivo (Responsive Design).</em></p>
+        </div>
+    </div>
+</div>
+
+        <div id="modelo-cajas" class="tag-desc">
+    <h2>El Modelo de Cajas (Box Model)</h2>
+    <p>En CSS, cada elemento se considera una caja rectangular. Entender cómo se calcula el tamaño de estas cajas es fundamental para el diseño web:</p>
+
+    <ul>
+        <li><strong>Content:</strong> El contenido real del elemento.</li>
+        <li><strong>Padding:</strong> El espacio entre el contenido y el borde.</li>
+        <li><strong>Border:</strong> La línea que rodea al padding y al contenido.</li>
+        <li><strong>Margin:</strong> El espacio libre fuera del borde para separar el elemento de otros.</li>
+    </ul>
+</div>
+
+        
+
+        <div style="background: #272822; padding: 20px; border-radius: 10px; text-align: center; color: white; margin: 20px 0;">
+        <div style="border: 2px dashed #f92672; padding: 20px; background: rgba(249, 38, 114, 0.1);">
+            <span style="color: #f92672; font-weight: bold;">Margin</span> (Espacio exterior)
+            <div style="border: 2px solid #a6e22e; padding: 20px; background: rgba(166, 226, 46, 0.1); margin-top: 10px;">
+                <span style="color: #a6e22e; font-weight: bold;">Border</span> (Línea del borde)
+                <div style="border: 2px solid #66d9ef; padding: 20px; background: rgba(102, 217, 239, 0.1); margin-top: 10px;">
+                    <span style="color: #66d9ef; font-weight: bold;">Padding</span> (Espacio interior)
+                    <div style="background: #ffffff; color: #333; padding: 10px; margin-top: 10px; border-radius: 4px;">
+                        <strong>Content</strong> (Texto o imagen)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</body>
+</html>

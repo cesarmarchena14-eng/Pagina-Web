@@ -1,0 +1,383 @@
+/* ==========================================================================
+   SISTEMA CAFÉ - HOJA DE ESTILOS GENERALES (UNIFICADA Y COMPLETA)
+   ========================================================================== */
+
+/* ─── 1. VARIABLES DE PALETA DE COLORES Y CONFIGURACIÓN GLOBAL ─── */
+:root {
+    --primary: #6f4e37;
+    --primary-dark: #4a3128;
+    --secondary: #f4f1ea;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --dark: #333;
+    --light: #fff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--secondary);
+    color: var(--dark);
+    margin: 0;
+    padding: 0;
+}
+
+/* ─── 2. ESTRUCTURA DE LA BARRA DE NAVEGACIÓN (NAVBAR) ─── */
+.nav-bar {
+    background-color: var(--primary-dark);
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+}
+
+.nav-bar a {
+    color: var(--secondary);
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.nav-bar a:hover, .nav-bar a.active {
+    background-color: var(--secondary);
+    color: var(--primary-dark);
+}
+
+/* ─── 3. CONTENEDOR PRINCIPAL Y MAQUETACIÓN GENERAL ─── */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: var(--light);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+h1 {
+    color: var(--primary-dark);
+    text-align: center;
+    margin-top: 0;
+}
+
+h2 {
+    color: var(--primary);
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 8px;
+    margin-top: 25px;
+}
+
+/* ─── 4. DISEÑO DE FORMULARIOS REALMENTE RESPONSIVOS ─── */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+.form-group input, .form-group select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: var(--primary);
+}
+
+/* Clases de utilidad para espaciados de formularios */
+.form-actions {
+    margin-top: 20px;
+}
+
+/* ─── 5. BOTONES Y COMPORTAMIENTOS DE ACCIÓN ─── */
+button, .btn {
+    padding: 11px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Mano interactiva */
+    transition: background-color 0.3s, transform 0.1s;
+    display: inline-block;
+    text-align: center;
+}
+
+button[type="submit"], .btn-primary {
+    background-color: var(--primary);
+    color: var(--light);
+    width: 100%;
+}
+
+button[type="submit"]:hover, .btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-danger { background-color: var(--danger); color: var(--light); }
+.btn-danger:hover { background-color: #bd2130; }
+
+.btn-success { background-color: var(--success); color: var(--light); }
+.btn-success:hover { background-color: #218838; }
+
+.btn-secondary { background-color: #6c757d; color: var(--light); }
+.btn-secondary:hover { background-color: #5a6268; }
+
+button:active, .btn:active {
+    transform: scale(0.98);
+}
+
+/* ─── 6. INTERRUPTOR VISUAL DE ACCESO ─── */
+.toggle-form {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.toggle-form a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.toggle-form a:hover {
+    text-decoration: underline;
+    color: var(--primary-dark);
+}
+
+.hidden { 
+    display: none !important;
+}
+
+/* ─── 7. COMPONENTES DE TABLAS DE DATOS Y CONTENEDORES ADAPTATIVOS ─── */
+.table-container {
+    overflow-x: auto; /* Scroll horizontal responsivo */
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+thead {
+    background-color: var(--primary-dark);
+    color: var(--secondary);
+}
+
+tr:hover {
+    background-color: #fcfbfa;
+}
+
+.badge-activo {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-inactivo {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-entidad {
+    background-color: #e2e3e5;
+    color: #383d41;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ─── 8. ESTILOS EXCLUSIVOS PARA EL MÓDULO DE REPORTES FINANCIEROS ─── */
+.report-cards-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.card-report {
+    flex: 1;
+    min-width: 220px;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-compras {
+    background: #e9ecef;
+    border-left: 5px solid var(--primary);
+}
+
+.card-ventas {
+    background: #e2f0d9;
+    border-left: 5px solid var(--success);
+}
+
+.card-title-compras {
+    font-size: 28px;
+    font-weight: bold;
+    color: #a04000;
+    margin: 10px 0;
+}
+
+.card-title-ventas {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin: 10px 0;
+}
+
+.card-subtext {
+    color: #555;
+    font-size: 13px;
+    display: block;
+}
+
+.row-report:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.cell-report {
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   NUEVOS ESTILOS MUDADOS DESDE COMPRAS
+   ========================================================================== */
+
+/* Encabezados Especiales */
+.main-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+}
+
+.section-title {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.subsection-title {
+    color: var(--primary);
+    margin-top: 20px;
+}
+
+/* Caja de Tasa BCV */
+.tasa-bcv-box {
+    background-color: #f7e6d4;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid #d4b294;
+}
+
+.tasa-bcv-box label {
+    font-weight: bold;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.tasa-bcv-box span {
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+.tasa-input {
+    width: 100px;
+    padding: 6px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Botonera de Modos */
+.modo-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.modo-btn-flex {
+    flex: 1;
+}
+
+/* Caja de Desglose en tiempo real */
+.desglose-box {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border-left: 5px solid var(--primary);
+}
+
+.desglose-total-monto {
+    font-size: 18px;
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.desglose-estimado {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Botón de Envió alineado */
+.submit-container {
+    margin-top: 25px;
+    text-align: right;
+}
+
+.btn-submit-large {
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+/* Estilo visual para los campos de solo lectura (Bloqueados) */
+input[readonly] {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+    cursor: not-allowed !important;
+    border-color: #ced4da !important;
+}

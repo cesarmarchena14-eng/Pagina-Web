@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programación Orientada a Objetos - Wiki Técnica</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../stylejs.css">
+</head>
+<body>
+
+    <header>
+        <h1>Paradigmas y Arquitectura Web</h1>
+        <nav class="nav-custom-menu">
+            <a href="../index.html.html" class="btn-nav">Inicio</a> 
+            <a href="Introduccion.html" class="btn-nav">Introducción</a> 
+            <a href="Paradigma Aquitectura.html" class="btn-nav">Paradigmas y Arq.</a>
+            <a href="Todo HTML.html" class="btn-nav">HTML</a>
+            <a href="CSS.html" class="btn-nav">CSS</a>
+            <a href="Javascript.html" class="btn-nav">JavaScript</a>
+            <a href="DOM.html" class="btn-nav">DOM</a>
+            <a href="POO.html" class="btn-nav">POO</a>
+            <a href="Formularios.html" class="btn-nav">Formularios / Test</a>
+            <a href="../Sistema Cafe/login.html" class="btn-nav">Login</a>
+
+        </nav>
+    </header>
+
+    <div class="flex-layout">
+        <!-- MENÚ LATERAL ESTILO WIKI -->
+        <aside class="sidebar-wiki">
+            <h4>Contenido POO</h4>
+            <ul>
+                <li><a href="#que-es-poo">1. ¿Qué es la POO?</a></li>
+                <li><a href="#clases-objetos">2. Clases y Objetos</a></li>
+                <li><a href="#abstraccion">3. Abstracción</a></li>
+                <li><a href="#encapsulamiento">4. Encapsulamiento</a></li>
+                <li><a href="#herencia">5. Herencia</a></li>
+                <li><a href="#polimorfismo">6. Polimorfismo</a></li>
+                <li><a href="#ventajas-poo">7. Ventajas de la POO</a></li>
+                <li><a href="#video-tutorial">▶ Video Explicativo</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="content-wiki">
+            
+            <section id="que-es-poo" class="tag-desc">
+                <h2>1. ¿Qué es la Programación Orientada a Objetos (POO)?</h2>
+                <p>La <strong>POO</strong> es un paradigma de programación, es decir, un modelo o estilo de desarrollo de software. En lugar de estructurar el código como una serie de funciones y líneas consecutivas (programación procedimental), la POO propone organizar el código simulando el mundo real a través de <strong>"Objetos"</strong>.</p>
+                <p>Cada objeto en nuestro programa agrupa sus propias características particulares (llamadas propiedades o atributos) y sus propias acciones que puede realizar (llamadas métodos).</p>
+            </section>
+
+            <section id="clases-objetos" class="tag-desc">
+                <h2>2. Los Pilares Base: Clases y Objetos</h2>
+                <p>Para entender la POO, debemos entender la diferencia entre un molde y el producto final:</p>
+                <ul>
+                    <li><strong>Clase:</strong> Es la plantilla, el molde o plano arquitectónico abstractor. Define qué propiedades y métodos tendrá un objeto, pero no contiene datos reales individuales.</li>
+                    <li><strong>Objeto / Instancia:</strong> Es el elemento real y concreto creado a partir del molde (clase). Ocupa un lugar único en la memoria RAM y tiene sus propios valores.</li>
+                </ul>
+                <h3>Ejemplo en JavaScript:</h3>
+                <pre><code><span class="token-comment">// Definimos el molde (Clase)</span>
+<span class="token-keyword">class</span> <span class="token-fn">Estudiante</span> {
+    <span class="token-keyword">constructor</span>(nombre, edad) {
+        <span class="token-keyword">this</span>.nombre = nombre; <span class="token-comment">// Atributo</span>
+        <span class="token-keyword">this</span>.edad = edad;     <span class="token-comment">// Atributo</span>
+    }
+    
+    <span class="token-comment">// Método (Acción)</span>
+    <span class="token-fn">saludar</span>() {
+        <span class="token-keyword">return</span> <span class="token-string">`Hola, soy ${this.nombre} y tengo ${this.edad} años.`</span>;
+    }
+}
+
+<span class="token-comment">// Instanciación: Creamos los objetos reales en la RAM</span>
+<span class="token-keyword">let</span> alumno1 = <span class="token-keyword">new</span> <span class="token-fn">Estudiante</span>(<span class="token-string">"Miguel"</span>, 20);
+<span class="token-keyword">let</span> alumno2 = <span class="token-keyword">new</span> <span class="token-fn">Estudiante</span>(<span class="token-string">"César"</span>, 22);
+
+<span class="token-fn">console</span>.<span class="token-fn">log</span>(alumno1.<span class="token-fn">saludar</span>()); <span class="token-comment">// Muestra los datos de alumno1</span></code></pre>
+            </section>
+
+            <section id="abstraccion" class="tag-desc">
+                <h2>3. Primer Pilar: Abstracción</h2>
+                <p>La <strong>Abstracción</strong> consiste en reducir un objeto complejo del mundo real a sus características esenciales para el sistema, ignorando los detalles que no son relevantes para nuestro software.</p>
+                <p><em>Analogía:</em> Si diseñamos un sistema escolar, un "Estudiante" necesita atributos como nombre, notas y cédula. Detalles como su tipo de sangre, su estatura o su color favorito se omiten porque no aportan valor al problema de estudio.</p>
+            
+
+ <h3>Ejemplo en JavaScript:</h3>
+                <pre><code><span class="token-keyword">class</span> <span class="token-fn">EstudianteAcademico</span> {
+    <span class="token-keyword">constructor</span>(cedula, nombre, nota1, nota2) {
+        <span class="token-keyword">this</span>.cedula = cedula;   <span class="token-comment">// Dato esencial</span>
+        <span class="token-keyword">this</span>.nombre = nombre;   <span class="token-comment">// Dato esencial</span>
+        <span class="token-keyword">this</span>.nota1 = nota1;     <span class="token-comment">// Dato esencial académico</span>
+        <span class="token-keyword">this</span>.nota2 = nota2;     <span class="token-comment">// Dato esencial académico</span>
+        <span class="token-comment">// Omitimos: estatura, peso, color favorito, pasatiempos, etc. (Eso es abstraer)</span>
+    }
+
+    <span class="token-comment">// Método que procesa los datos abstractos recolectados</span>
+    <span class="token-fn">calcularPromedio</span>() {
+        <span class="token-keyword">let</span> promedio = (<span class="token-keyword">this</span>.nota1 + <span class="token-keyword">this</span>.nota2) / 2;
+        <span class="token-keyword">return</span> promedio;
+    }
+
+    <span class="token-fn">obtenerEstado</span>() {
+        <span class="token-keyword">return</span> <span class="token-keyword">this</span>.<span class="token-fn">calcularPromedio</span>() >= 10 ? <span class="token-string">"Aprobado"</span> : <span class="token-string">"Reprobado"</span>;
+    }
+}
+
+<span class="token-comment">// Instanciación aplicando la abstracción</span>
+<span class="token-keyword">let</span> estudianteVirtual = <span class="token-keyword">new</span> <span class="token-fn">EstudianteAcademico</span>(<span class="token-string">"V-30123456"</span>, <span class="token-string">"César"</span>, 18, 16);
+<span class="token-fn">console</span>.<span class="token-fn">log</span>(<span class="token-string">`Estado: ${estudianteVirtual.obtenerEstado()} con promedio de ${estudianteVirtual.calcularPromedio()}`</span>);</code></pre>
+            </section>
+
+            <section id="encapsulamiento" class="tag-desc">
+                <h2>4. Segundo Pilar: Encapsulamiento</h2>
+                <p>El <strong>Encapsulamiento</strong> consiste en ocultar o proteger los datos internos de un objeto del mundo exterior, impidiendo que sean modificados de forma directa o malintencionada. Para interactuar con estas propiedades protegidas, se crean métodos de puente públicos (conocidos como <em>Getters</em> para leer y <em>Setters</em> para modificar).</p>
+                <p>En JavaScript moderno, las propiedades privadas se declaran usando el símbolo <code>#</code> antes de su nombre.</p>
+                <h3>Ejemplo en JavaScript:</h3>
+                <pre><code><span class="token-keyword">class</span> <span class="token-fn">CuentaBancaria</span> {
+    #saldo; <span class="token-comment">// Atributo 100% privado</span>
+
+    <span class="token-keyword">constructor</span>(montoInicial) {
+        <span class="token-keyword">this</span>.#saldo = montoInicial;
+    }
+
+    <span class="token-comment">// Método público controlado para modificar el saldo de forma segura</span>
+    <span class="token-fn">depositar</span>(dinero) {
+        <span class="token-keyword">if</span> (dinero > 0) {
+            <span class="token-keyword">this</span>.#saldo += dinero;
+        }
+    }
+
+    <span class="token-comment">// Getter público para poder ver el saldo sin alterarlo</span>
+    <span class="token-keyword">get</span> <span class="token-fn">obtenerSaldo</span>() {
+        <span class="token-keyword">return</span> <span class="token-keyword">this</span>.#saldo;
+    }
+}
+
+<span class="token-keyword">let</span> miCuenta = <span class="token-keyword">new</span> <span class="token-fn">CuentaBancaria</span>(500);
+miCuenta.#saldo = 0; <span class="token-comment">// ❌ Error: JavaScript bloquea el acceso directo externo</span>
+miCuenta.<span class="token-fn">depositar</span>(200); <span class="token-comment">// ✅ Forma correcta y segura</span></code></pre>
+            </section>
+
+            <section id="herencia" class="tag-desc">
+                <h2>5. Tercer Pilar: Herencia</h2>
+                <p>La <strong>Herencia</strong> es el mecanismo que permite crear una clase nueva (Clase Hija) basándose en una clase existente (Clase Padre). La clase hija adopta automáticamente todos los atributos y métodos de la clase padre, permitiendo reutilizar código y extender su comportamiento sin volver a escribirlo todo desde cero.</p>
+                <p>En JavaScript se implementa utilizando la palabra reservada <code>extends</code> y el método <code>super()</code> para invocar al constructor del padre.</p>
+                <h3>Ejemplo en JavaScript:</h3>
+                <pre><code><span class="token-comment">// Clase Padre General</span>
+<span class="token-keyword">class</span> <span class="token-fn">Persona</span> {
+    <span class="token-keyword">constructor</span>(nombre) {
+        <span class="token-keyword">this</span>.nombre = nombre;
+    }
+}
+
+<span class="token-comment">// Clase Hija Específica que hereda de Persona</span>
+<span class="token-keyword">class</span> <span class="token-fn">Profesor</span> <span class="token-keyword">extends</span> <span class="token-fn">Persona</span> {
+    <span class="token-keyword">constructor</span>(nombre, materia) {
+        <span class="token-keyword">super</span>(nombre); <span class="token-comment">// Llama al constructor de Persona</span>
+        <span class="token-keyword">this</span>.materia = materia; <span class="token-comment">// Atributo único de Profesor</span>
+    }
+}
+
+<span class="token-keyword">let</span> prof = <span class="token-keyword">new</span> <span class="token-fn">Profesor</span>(<span class="token-string">"Carlos Alfonzo"</span>, <span class="token-string">"Programación"</span>);
+<span class="token-fn">console</span>.<span class="token-fn">log</span>(prof.nombre); <span class="token-comment">// ✅ Funciona: heredó la propiedad 'nombre'</span></code></pre>
+            </section>
+
+            <section id="polimorfismo" class="tag-desc">
+                <h2>6. Cuarto Pilar: Polimorfismo</h2>
+                <p>El <strong>Polimorfismo</strong> (múltiples formas) significa que un mismo método o acción puede comportarse de manera diferente según el objeto que lo ejecute. Permite que clases hijas redefinan o sobrescriban un método heredado del padre para adaptarlo a su propia necesidad.</p>
+                <h3>Ejemplo en JavaScript:</h3>
+                <pre><code><span class="token-keyword">class</span> <span class="token-fn">Animal</span> {
+    <span class="token-fn">hacerSonido</span>() {
+        <span class="token-keyword">return</span> <span class="token-string">"Sonido genérico..."</span>;
+    }
+}
+
+<span class="token-keyword">class</span> <span class="token-fn">Perro</span> <span class="token-keyword">extends</span> <span class="token-fn">Animal</span> {
+    <span class="token-comment">// Sobrescribimos el método para adaptarlo al Perro</span>
+    <span class="token-fn">hacerSonido</span>() {
+        <span class="token-keyword">return</span> <span class="token-string">"¡Guau! ¡Guau!"</span>;
+    }
+}
+
+<span class="token-keyword">class</span> <span class="token-fn">Gato</span> <span class="token-keyword">extends</span> <span class="token-fn">Animal</span> {
+    <span class="token-comment">// Sobrescribimos el método para adaptarlo al Gato</span>
+    <span class="token-fn">hacerSonido</span>() {
+        <span class="token-keyword">return</span> <span class="token-string">"¡Miau!"</span>;
+    }
+}
+
+<span class="token-keyword">let</span> misAnimales = [<span class="token-keyword">new</span> <span class="token-fn">Perro</span>(), <span class="token-keyword">new</span> <span class="token-fn">Gato</span>()];
+<span class="token-comment">// El mismo método 'hacerSonido()' dará respuestas totalmente distintas</span>
+misAnimales.<span class="token-fn">forEach</span>(animal => <span class="token-fn">console</span>.<span class="token-fn">log</span>(animal.<span class="token-fn">hacerSonido</span>()));</code></pre>
+            </section>
+
+            <section id="ventajas-poo" class="tag-desc">
+                <h2>7. Ventajas Fundamentales del Paradigma</h2>
+                <div class="ventajas-container">
+                    <h3>🎯 Beneficios Técnicos de usar POO</h3>
+                    <ul class="ventajas-list">
+                        <li><strong>Reutilización de código (DRY - Don't Repeat Yourself):</strong> Mediante el uso de clases y herencia, puedes escribir la lógica de un componente una sola vez y reutilizarla en múltiples partes del sistema sin duplicar líneas de código, reduciendo drásticamente el tamaño del software.</li>
+                        <li><strong>Mantenibilidad y depuración eficiente:</strong> Al estar el código modularizado en objetos independientes, si se detecta un error en un comportamiento específico, el desarrollador sabe exactamente qué clase debe corregir. Los cambios internos en un objeto no rompen de forma impredecible el resto del sistema.</li>
+                        <li><strong>Modularidad para el trabajo en equipo:</strong> Permite dividir aplicaciones robustas en módulos o clases autónomas. Esto facilita que diferentes desarrolladores trabajen en paralelo en distintos objetos sin generar conflictos en el código fuente.</li>
+                        <li><strong>Seguridad de datos mediante encapsulamiento:</strong> Protege la integridad de la información sensible restringiendo el acceso directo a las propiedades críticas de los objetos. Solo los métodos autorizados y controlados (getters y setters) pueden leer o modificar los datos internos, evitando manipulaciones externas corruptas o accidentales.</li>
+                        <li><strong>Escalabilidad orgánica:</strong> Añadir nuevas funcionalidades o características al sistema es sumamente sencillo. Puedes extender el comportamiento de las clases existentes creando subclases a través de la herencia, permitiendo que el software crezca sin necesidad de reescribir la arquitectura base.</li>
+                    </ul>
+                </div>
+            </section>
+
+                <!-- SECCIÓN DEL VIDEO EXPLICATIVO -->
+            <div id="video-tutorial" class="video-container">
+                <h3>▶ Material Audiovisual: Introducción Práctica a la POO</h3>
+                <!-- NOTA: Recuerda colocar tu archivo de video en una carpeta "videos" o cambiar la ruta en 'src' -->
+                <iframe src="https://drive.google.com/file/d/1ypDHNPlIOH4smZAHvaIbhtCceM1NboM1/preview" class="video-iframe" allow="autoplay" allowfullscreen></iframe>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
