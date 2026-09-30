@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo sobre HTML - Blog César Marchena</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Paradigmas y Arquitectura Web</h1>
+        <nav class="nav-custom-menu">
+            <a href="../index.html.html" class="btn-nav">Inicio</a> 
+            <a href="Introduccion.html" class="btn-nav">Introducción</a> 
+            <a href="Paradigma Aquitectura.html" class="btn-nav">Paradigmas y Arq.</a>
+            <a href="Todo HTML.html" class="btn-nav">HTML</a>
+            <a href="CSS.html" class="btn-nav">CSS</a>
+            <a href="Javascript.html" class="btn-nav">JavaScript</a>
+            <a href="DOM.html" class="btn-nav">DOM</a>
+            <a href="POO.html" class="btn-nav">POO</a>
+            <a href="Formularios.html" class="btn-nav">Formularios / Test</a>
+            <a href="../Sistema Cafe/login.html" class="btn-nav">Login</a>
+            <a href="../Programa de gasolina/Index Publico/login.html" class="btn-nav">Gasolina</a>
+        </nav>
+    </header>
+
+    <div class="flex-layout">
+        <aside class="sidebar-wiki">
+            <h4>Navegación HTML</h4>
+            <ul>
+                <li><a href="#definicion">1. ¿Qué es HTML?</a></li>
+                <li><a href="#hipertexto">2. Hipertexto</a></li>
+                <li><a href="#etiquetas">3. Marcas y Etiquetas</a></li>
+                <li><a href="#estructura">4. Estructura Semántica</a></li>
+                <li><a href="#diccionario">5. Diccionario de Tags</a></li>
+                <li><a href="#consecuencias">6. ¿Qué pasa si se borran?</a></li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center;">
+        <a href="../PDF//Todo sobre HTML.pdf" download="Guia_HTML.pdf" 
+           style="display: inline-flex; align-items: center; gap: 8px; background: #3282b8; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85rem; font-weight: bold;">
+            <span>📥</span> Descargar PDF
+        </a>
+    </div>
+
+        </aside>
+
+        <main class="content-wiki">
+            
+            <section id="definicion" class="tag-desc">
+                <h2>HTML</h2>
+                <p>Es el componente más básico de la Web. Define el significado y la estructura del contenido web. Además de HTML, generalmente se utilizan otras tecnologías para describir la apariencia/presentación de una página web (CSS) o la funcionalidad/comportamiento (JavaScript).</p>
+            </section>
+
+            <section id="hipertexto" class="tag-desc">
+                <h2>Hipertexto</h2>
+                <p>"Hipertexto" hace referencia a los enlaces que conectan páginas web entre sí, ya sea dentro de un único sitio web o entre sitios web. Los enlaces son un aspecto fundamental de la Web. Al subir contenido a Internet y vincularlo a las páginas creadas por otras personas, te conviertes en un participante activo en la «World Wide Web» (Red Informática Mundial).</p>
+            </section>
+
+            <section id="etiquetas" class="tag-desc">
+                <h2>Marcas y Etiquetas</h2>
+                <p>HTML utiliza "marcas" para etiquetar texto, imágenes y otro contenido para mostrarlo en un navegador Web. Las marcas HTML incluyen "elementos" especiales como &lt;head&gt;, &lt;title&gt;, &lt;body&gt;, &lt;header&gt;, &lt;footer&gt;, &lt;article&gt;, &lt;section&gt;, &lt;p&gt;, &lt;div&gt;, &lt;span&gt;, &lt;img&gt;, &lt;aside&gt;, &lt;audio&gt;, &lt;canvas&gt;, &lt;datalist&gt;, &lt;details&gt;, &lt;embed&gt;, &lt;nav&gt;, &lt;output&gt;, &lt;progress&gt;, &lt;video&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt; y muchos otros.</p>
+                <p>Un elemento HTML se distingue de otro texto en un documento mediante "etiquetas", que consisten en el nombre del elemento rodeado por "&lt;" y "&gt;". El nombre de un elemento dentro de una etiqueta no distingue entre mayúsculas y minúsculas. Es decir, se puede escribir en mayúsculas, minúsculas o una mezcla. Por ejemplo, la etiqueta &lt;title&gt; se puede escribir como &lt;Title&gt;, &lt;TITLE&gt; o de cualquier otra forma.</p>
+            </section>
+
+            <section id="estructura" class="tag-desc">
+                <h2>Estructura Semántica (El Plano)</h2>
+                <pre style="background: #272822; color: #f8f8f2; padding: 15px; border-radius: 8px;">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;title&gt;Título de mi Página&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            </section>
+
+            <section id="diccionario" class="tag-desc">
+                <h2>Diccionario de Etiquetas</h2>
+                
+                <h3>Metadatos y Cabecera</h3>
+                <p><strong>&lt;head&gt;:</strong> El encabezado (donde suele ir el logo y el menú).</p>
+                <p><strong>&lt;link&gt;:</strong> Se usa para enlazar recursos externos al documento HTML. El ejemplo más común son las hojas de estilos CSS.</p>
+                <p><strong>&lt;meta&gt;:</strong> Etiqueta usada para definir otros metadatos que no se pueden definir con una etiqueta HTML específica.</p>
+                <p><strong>&lt;style&gt;:</strong> Etiquetas usadas para introducir código CSS en línea, es decir, en el propio documento HTML.</p>
+
+                <h3>Estructura y Secciones</h3>
+                <p><strong>&lt;body&gt;:</strong> Todo lo que quieras mostrar en la página web debe ir recogido dentro de estas etiquetas. Este contenido será el que se muestre en la web.</p>
+                <p><strong>&lt;nav&gt;:</strong> Define la sección de navegación de la web.</p>
+                <p><strong>&lt;main&gt;:</strong> Contenido principal del documento. Solo puede existir uno por documento.</p>
+                <p><strong>&lt;section&gt;:</strong> Define una sección del documento.</p>
+                <p><strong>&lt;article&gt;:</strong> Define contenido independiente de la web.</p>
+                <p><strong>&lt;aside&gt;:</strong> Contenido adicional relacionado pero de poca importancia.</p>
+                <p><strong>&lt;h1&gt; a &lt;h6&gt;:</strong> Usadas para jerarquizar el contenido de la web.</p>
+                <p><strong>&lt;header&gt;:</strong> Define la cabecera (logo, menú, etc.).</p>
+                <p><strong>&lt;footer&gt;:</strong> Define el pie de página.</p>
+                <p><strong>&lt;a&gt;:</strong> Conecta páginas entre sí usando el atributo href.</p>
+                <p><strong>&lt;script&gt;:</strong> Inserta código de JavaScript.</p>
+
+                <h3>Agrupación y Multimedia</h3>
+                <p><strong>&lt;p&gt;:</strong> Párrafos de texto.</p>
+                <p><strong>&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;:</strong> Creación de listas ordenadas y desordenadas.</p>
+                <p><strong>&lt;div&gt;:</strong> Contenedor genérico.</p>
+                <p><strong>&lt;img&gt;:</strong> Pintar una imagen.</p>
+                <p><strong>&lt;iframe&gt;:</strong> Anidar otro documento HTML.</p>
+                <p><strong>&lt;video&gt; y &lt;audio&gt;:</strong> Reproducción de archivos multimedia.</p>
+
+                <h3>Formularios</h3>
+                <p><strong>&lt;form&gt;:</strong> Etiqueta de apertura y cierre de un formulario.</p>
+                <p><strong>&lt;output&gt;:</strong> Muestra el resultado de un cálculo.</p>
+                <p><strong>&lt;input&gt;:</strong> Campo de introducción de datos para el usuario.</p>
+            </section>
+
+            <section id="consecuencias" class="tag-desc">
+                <h2>¿Qué pasa si se borran?</h2>
+                
+                <h4>1. El Cerebro Invisible: Metadatos</h4>
+                <p>Si eliminas <strong>&lt;head&gt;</strong>, la página será un cascarón vacío de identidad. Sin <strong>&lt;link&gt;</strong>, tu web parecerá de los años 90 (texto plano). Sin <strong>&lt;meta&gt;</strong> viewport, se verá rota en móviles.</p>
+
+                <h4>2. El Cuerpo y los Cimientos</h4>
+                <p>Borrar <strong>&lt;body&gt;</strong> puede causar errores de renderizado masivos. Sin etiquetas semánticas (<strong>&lt;nav&gt;, &lt;header&gt;</strong>), la navegación para personas con discapacidad es imposible. Sin <strong>&lt;a&gt;</strong>, tu sitio es una isla aislada.</p>
+
+                <h4>3. Orden y Multimedia</h4>
+                <p>Sin <strong>&lt;p&gt;</strong>, el texto es una masa infinita. Sin <strong>&lt;div&gt;</strong>, el diseño (layout) se rompe totalmente. Borrar <strong>&lt;img&gt;</strong> o <strong>&lt;video&gt;</strong> deja la web muda y ciega.</p>
+
+                <h4>4. Interacción</h4>
+                <p>Sin <strong>&lt;form&gt;</strong>, los datos no se envían a ningún lado. Sin <strong>&lt;input&gt;</strong>, el usuario no puede escribir nada.</p>
+
+                <div style="text-align:center; padding: 20px;">
+                    <img src="../recursos/Ejemplos.png" alt="Impacto visual" style="max-width: 90%; border: 1px solid #ccc;">
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

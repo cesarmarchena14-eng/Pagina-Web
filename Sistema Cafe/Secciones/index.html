@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisteam Café - Proveedores</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html">🏢 Proveedores</a>
+        <a href="clientes.html">🏪 Clientes</a>
+        <a href="compras.html">☕ Gestión Compra/Venta</a>
+        <a href="ventas.html">💰 Ventas Diarias</a>
+        <a href="reportes.html">📊 Reporte Financiero</a>
+    </div>
+
+    <div class="container">
+        <h1>Gestionar Proveedores de Café</h1>
+        <h2 id="tituloForm">Registrar Nuevo Proveedor</h2>
+
+        <form id="formProveedor">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nombre del Negocio:</label>
+                    <input type="text" id="nombre_negocio" required placeholder="Ej: Café Delicioso">
+                </div>
+                <div class="form-group">
+                    <label>RIF del Negocio:</label>
+                    <input type="text" id="rif_negocio" placeholder="Ej: J-12345678-0" required>
+                </div>
+                <div class="form-group">
+                    <label>Nombre del Contacto:</label>
+                    <input type="text" id="c_nombre" required placeholder="Ej: Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Cédula del Contacto:</label>
+                    <input type="text" id="c_cedula" required placeholder="Ej: 12345678">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    <input type="tel" id="c_telefono" required placeholder="Ej: 0412-1234567"> 
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico:</label>
+                    <input type="email" id="c_correo" required placeholder="Ej: juan@proveedor.com">
+                </div>
+            </div>
+            <button type="submit" id="btnGuardar">Guardar Proveedor</button>
+            <button type="button" id="btnCancelar" class="btn-secondary hidden" onclick="cancelarEdicion()">Cancelar</button>
+        </form>
+
+        <h2>Lista de Proveedores</h2>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Negocio / RIF</th>
+                        <th>Contacto</th>
+                        <th>Teléfono / Correo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProveedores"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let editando = false;
+        let idEditar = null;
+
+        function mostrarProveedores() {
+            const tbody = document.getElementById('tablaProveedores');
+            const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+            tbody.innerHTML = '';
+
+            if(proveedores.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay proveedores registrados.</td></tr>';
+                return;
+            }
+
+            proveedores.forEach((p, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${p.nombre_negocio}</strong><br><small>${p.rif_negocio}</small></td>
+                    <td>${p.c_nombre}<br><small>C.I: ${p.c_cedula}</small></td>
+                    <td>${p.c_telefono}<br><small>${p.c_correo}</small></td>
+                    <td><span class="badge ${p.activo ? 'badge-success' : 'badge-danger'}">${p.activo ? 'Activo' : 'Inactivo'}</span></td>
+                    <td>
+                        <button class="btn-sm btn-warning" onclick="prepararEdicion(${idx})">✏️ Editar</button>
+                        <button class="btn-sm ${p.activo ? 'btn-danger' : 'btn-success'}" onclick="alternarEstado(${idx})">
+                            ${p.activo ? '🛑 Desactivar' : '✅ Activar'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('formProveedor').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+
+            const datosContacto = {
+                c_nombre: document.getElementById('c_nombre').value.trim(),
+                c_cedula: document.getElementById('c_cedula').value.trim(),
+                c_telefono: document.getElementById('c_telefono').value.trim(),
+                c_correo: document.getElementById('c_correo').value.trim()
+            };
+
+            if(editando) {
+                // Modifica: Solo los datos de contacto según instrucción del profesor
+                proveedores[idEditar] = {
+                    ...proveedores[idEditar],
+                    ...datosContacto
+                };
+                alert("Datos de contacto actualizados.");
+                cancelarEdicion();
+            } else {
+                // Agregar nuevo completo
+                const rif = document.getElementById('rif_negocio').value.trim().toUpperCase();
+                if(proveedores.some(p => p.rif_negocio.toUpperCase() === rif)) {
+                    alert("Este RIF ya está registrado.");
+                    return;
+                }
+
+                proveedores.push({
+                    nombre_negocio: document.getElementById('nombre_negocio').value.trim(),
+                    rif_negocio: rif,
+                    ...datosContacto,
+                    activo: true
+                });
+                alert("Proveedor agregado con éxito.");
+            }
+
+            localStorage.setItem('proveedores', JSON.stringify(proveedores));
+            document.getElementById('formProveedor').reset();
+            mostrarProveedores();
+        });
+
+        function prepararEdicion(idx) {
+            const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+            const p = proveedores[idx];
+
+            // Bloquear campos de negocio
+            document.getElementById('nombre_negocio').value = p.nombre_negocio;
+            document.getElementById('nombre_negocio').disabled = true;
+            document.getElementById('rif_negocio').value = p.rif_negocio;
+            document.getElementById('rif_negocio').disabled = true;
+
+            // Rellenar datos de contacto editables
+            document.getElementById('c_nombre').value = p.c_nombre;
+            document.getElementById('c_cedula').value = p.c_cedula;
+            document.getElementById('c_telefono').value = p.c_telefono;
+            document.getElementById('c_correo').value = p.c_correo;
+
+            document.getElementById('tituloForm').textContent = "✏️ Modificando Contacto de " + p.nombre_negocio;
+            document.getElementById('btnCancelar').classList.remove('hidden');
+            editando = true;
+            idEditar = idx;
+        }
+
+        function cancelarEdicion() {
+            document.getElementById('formProveedor').reset();
+            document.getElementById('nombre_negocio').disabled = false;
+            document.getElementById('rif_negocio').disabled = false;
+            document.getElementById('tituloForm').textContent = "Registrar Nuevo Proveedor";
+            document.getElementById('btnCancelar').classList.add('hidden');
+            editando = false;
+            idEditar = null;
+        }
+
+        function alternarEstado(idx) {
+            let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+            proveedores[idx].activo = !proveedores[idx].activo; // Desactivar / Activar negocio
+            localStorage.setItem('proveedores', JSON.stringify(proveedores));
+            mostrarProveedores();
+        }
+
+        window.onload = mostrarProveedores;
+    </script>
+</body>
+</html>

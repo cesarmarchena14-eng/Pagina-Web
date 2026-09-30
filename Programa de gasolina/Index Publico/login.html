@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORICHUNA.CA - Inicio de Sesión</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="login-page">
+
+    <div class="login-card">
+        <h2>ORICHUNA.CA</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">Sistema de Gestión de Combustible</p>
+        
+        <form id="form-login">
+            <div class="form-group">
+                <label for="login-correo">Correo o Teléfono:</label>
+                <input type="text" id="login-correo" placeholder="ejemplo@orichuna.ca o 04121234567" required>
+            </div>
+            
+            <button type="submit" class="btn-primary">Iniciar Sesión</button>
+        </form>
+
+        <div class="divider">
+            <span>Ó</span>
+        </div>
+
+        <button type="button" id="btn-acceso-publico" class="btn-secondary">
+            Ingresar como Cliente (Acceso Público)
+        </button>
+    </div>
+
+    <script src="../java.js"></script>
+</body>
+</html>

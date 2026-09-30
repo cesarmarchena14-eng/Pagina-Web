@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORICHUNA.CA - Panel Principal</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="main-page">
+
+<div class="container">
+    <header>
+        <h1>ORICHUNA.CA - Estación de Servicios</h1>
+        <div id="sesion-info">Modo Público (Cliente)</div>
+    </header>
+
+    <!-- 1. CONFIGURACIÓN DE LA ESTACIÓN -->
+    <div class="card" id="modulo-estacion">
+        <h2>1. Configuración de la Estación de Servicios</h2>
+        <form id="form-estacion">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="combustible-total">Litros Totales Disponibles:</label>
+                    <input type="number" id="combustible-total" min="1" placeholder="Ej: 5000" required>
+                </div>
+                <div class="form-group">
+                    <label for="hora-inicio">Hora de Apertura:</label>
+                    <input type="time" id="hora-inicio" required>
+                </div>
+                <div class="form-group">
+                    <label for="hora-cierre">Hora de Cierre:</label>
+                    <input type="time" id="hora-cierre" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-blue" style="margin-top: 15px;">Guardar Configuración</button>
+        </form>
+    </div>
+
+    <!-- 2. GESTOR DE USUARIOS (ADMINISTRADOR) -->
+    <div class="card" id="modulo-usuarios">
+        <h2>2. Gestor de Usuarios (Administrador)</h2>
+        <form id="form-usuario">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="cedula-usuario">Cédula:</label>
+                    <input type="text" id="cedula-usuario" placeholder="Ej: 28123456" required>
+                </div>
+                <div class="form-group">
+                    <label for="nombre-usuario">Nombre:</label>
+                    <input type="text" id="nombre-usuario" placeholder="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido-usuario">Apellido:</label>
+                    <input type="text" id="apellido-usuario" placeholder="Apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo-usuario">Correo Electrónico:</label>
+                    <input type="email" id="correo-usuario" placeholder="correo@orichuna.ca" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono-usuario">Teléfono Celular:</label>
+                    <input type="tel" id="telefono-usuario" placeholder="Ej: 04121234567" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo-usuario">Tipo de Usuario:</label>
+                    <select id="tipo-usuario" required>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Empleado">Empleado</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <button type="submit" id="btn-guardar-usuario" class="btn-green">Registrar Usuario</button>
+            </div>
+        </form>
+
+        <h3 style="margin-top: 20px;">Usuarios Registrados</h3>
+        <table id="tabla-usuarios">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Contenido dinámico mediante JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 3. SOLICITUD DE TICKET CON TEMPORIZADOR -->
+    <div class="card" id="modulo-asignacion">
+        <h2>3. Procesamiento de Asignación de Combustible</h2>
+        
+        <div style="text-align: center; margin-bottom: 15px;">
+            <button type="button" id="btn-iniciar-proceso" class="btn-orange">Iniciar Proceso (3 Minutos Max)</button>
+            <div class="timer-box">Tiempo Restante: <span id="timer-display">03:00</span></div>
+        </div>
+
+        <form id="form-asignacion">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="tipo-vehiculo">Tipo de Vehículo:</label>
+                    <select id="tipo-vehiculo" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Moto">Moto</option>
+                        <option value="Automóvil">Automóvil</option>
+                        <option value="Camión">Camión</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="marca">Marca:</label>
+                    <select id="marca" required>
+                        <option value="">Seleccione tipo primero...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modelo">Modelo:</label>
+                    <select id="modelo" required>
+                        <option value="">Seleccione marca primero...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="placa">Placa:</label>
+                    <input type="text" id="placa" placeholder="Ej: AA123BB" required>
+                </div>
+                <div class="form-group">
+                   <label for="color">Color:</label>
+                   <select id="color" required>
+            <option value="">Seleccione color...</option>
+            <option value="Blanco">Blanco</option>
+            <option value="Negro">Negro</option>
+            <option value="Gris">Gris</option>
+            <option value="Plata">Plata</option>
+            <option value="Rojo">Rojo</option>
+            <option value="Azul">Azul</option>
+            <option value="Verde">Verde</option>
+            <option value="Amarillo">Amarillo</option>
+                </select>
+</div>
+                <div class="form-group">
+                    <label for="litros-gasolina">Litros a Surtir:</label>
+                    <input type="number" id="litros-gasolina" min="1" placeholder="Ej: 20" required>
+                </div>
+            </div>
+            <button type="submit" id="btn-procesar" class="btn-green" style="margin-top: 15px;" disabled>Procesar y Generar Ticket</button>
+        </form>
+
+        <div id="ticket-resultado" class="comprobante">Esperando asignación...</div>
+    </div>
+
+    <!-- 4. BÚSQUEDA Y REPORTES FILTRADOS -->
+    <div class="card">
+        <h2>4. Búsqueda y Reportes Filtrados</h2>
+        
+        <!-- Búsqueda -->
+        <div style="margin-bottom: 20px;">
+            <h3>Búsqueda Directa</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="input-busqueda" placeholder="Ingrese Código de Verificación o Placa" style="flex: 1; padding: 8px;">
+                <button type="button" id="btn-buscar" class="btn-blue">Buscar Ticket</button>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <h3>Filtros Avanzados de Reportes</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="filtro-tipo">Tipo de Vehículo:</label>
+                <select id="filtro-tipo">
+                    <option value="">Todos</option>
+                    <option value="Moto">Moto</option>
+                    <option value="Automóvil">Automóvil</option>
+                    <option value="Camión">Camión</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="filtro-marca">Marca:</label>
+                <input type="text" id="filtro-marca" placeholder="Buscar Marca">
+            </div>
+            <div class="form-group">
+                <label for="filtro-modelo">Modelo:</label>
+                <input type="text" id="filtro-modelo" placeholder="Buscar Modelo">
+            </div>
+            <div class="form-group">
+                <label for="filtro-estatus">Estatus:</label>
+                <select id="filtro-estatus">
+                    <option value="">Todos</option>
+                    <option value="Aceptado">Aceptado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" id="btn-filtrar-reporte" class="btn-blue" style="margin-top: 15px;">Aplicar Filtros</button>
+
+        <h3 id="total-combustible-reporte" style="margin-top: 15px; color: #27ae60;">
+            Total Combustible Asignado: 0 Litros
+        </h3>
+
+        <!-- Tabla General de Tickets -->
+        <h3>Tickets Registrados</h3>
+        <table id="tabla-tickets">
+            <thead>
+                <tr>
+                    <th>Turno</th>
+                    <th>Placa</th>
+                    <th>Tipo</th>
+                    <th>Marca / Modelo</th>
+                    <th>Combustible</th>
+                    <th>Estatus</th>
+                    <th>Código Verificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Generado por JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="../java.js"></script>
+</body>
+</html>
